@@ -33,4 +33,8 @@ RUN \
   apk del varnish-dev autoconf automake make libtool python py-docutils
 
 WORKDIR /
+
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
+
 CMD ["varnishd"]
