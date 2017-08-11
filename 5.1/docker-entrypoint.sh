@@ -9,11 +9,11 @@ fi
 if [ "$1" = 'varnishd' ]; then
 	set $@ -F
 
-	if [ ! -e /etc/varnish/default.vcl ]; then
+	if [ -e /etc/varnish/default.vcl ]; then
 		set $@ -f /etc/varnish/default.vcl
 	fi
 
-	if [ ! -e /etc/varnish/secret ]; then
+	if [ -e /etc/varnish/secret ]; then
 		set $@ -S /etc/varnish/secret
 	fi
 
