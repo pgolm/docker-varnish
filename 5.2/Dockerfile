@@ -1,7 +1,7 @@
-FROM alpine:3.6
+FROM alpine:3.7
 
-ARG VARNISH_VERSION=5.1.3-r0
-ARG MODULE_VERSION=0.12.1
+ARG VARNISH_VERSION=5.2.1-r0
+ARG MODULE_VERSION=0.13.0
 
 LABEL maintainer="Peter Golm <golm.peter@gmail.com>" \
   varnish.version=$VARNISH_VERSION               \
@@ -15,7 +15,6 @@ RUN \
   update-ca-certificates &&                                   \
   apk add                                                     \
   --no-cache                                                \
-  --repository http://dl-3.alpinelinux.org/alpine/edge/main \
   varnish=${VARNISH_VERSION}                                \
   varnish-dev=${VARNISH_VERSION}                            \
   varnish-libs=${VARNISH_VERSION}
@@ -25,14 +24,13 @@ RUN \
   cd /tmp &&                                                                                                    \
   apk add                                                                                                       \
   --no-cache                                                                                                  \
-  --repository http://dl-3.alpinelinux.org/alpine/edge/main                                                   \
   varnish-dev=${VARNISH_VERSION} &&                                                                           \
   apk add                                                                                                       \
   --no-cache                                                                                                  \
   autoconf automake libtool make py-docutils python &&                                                        \
-  wget -O varnish_modules.tar.gz https://github.com/varnish/varnish-modules/archive/${MODULE_VERSION}.tar.gz && \
+  wget -O varnish_modules.tar.gz https://download.varnish-software.com/varnish-modules/varnish-modules-${MODULE_VERSION}.tar.gz && \
   tar -zxf varnish_modules.tar.gz &&                                                                            \
-  cd varnish-modules-${MODULE_VERSION} && ./bootstrap && ./configure && make && make install &&                 \
+  cd varnish-modules-${MODULE_VERSION} && ./configure && make && make install &&                 \
   cd .. && rm -fr varnish-modules-${MODULE_VERSION} &&                                                          \
   apk del varnish-dev autoconf automake make libtool python py-docutils
 
